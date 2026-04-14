@@ -13,8 +13,9 @@
 
 WORK_DIR="/home/z/my-project"
 LOG_FILE="$WORK_DIR/seamless.log"
-PROXY_SCRIPT="$WORK_DIR/proxy.py"
-WATCHDOG_SCRIPT="$WORK_DIR/watchdog.py"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROXY_SCRIPT="$SCRIPT_DIR/proxy.py"
+WATCHDOG_SCRIPT="$SCRIPT_DIR/watchdog.py"
 CONFIG_ENV="$WORK_DIR/config.env"
 
 # 加载配置

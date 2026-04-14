@@ -58,6 +58,7 @@ def load_config():
         'TUNNEL_LOG_FILE': 'LOG_FILE',
         'TUNNEL_WORK_DIR': 'WORK_DIR',
         'TUNNEL_NGROK_AUTHTOKEN': 'NGROK_AUTHTOKEN',
+        'TUNNEL_NGROK_PATH': 'NGROK_PATH',
     }
     for env_key, conf_key in env_map.items():
         val = os.environ.get(env_key)
@@ -74,11 +75,15 @@ USER_ID = CFG.get('X_USER_ID', '')
 UPSTREAM = CFG.get('API_HOST', '172.25.136.193')
 UPSTREAM_PORT = int(CFG.get('API_PORT', '8080'))
 NGROK_AUTHTOKEN = CFG.get('NGROK_AUTHTOKEN', '')
+NGROK_PATH = CFG.get('NGROK_PATH', 'ngrok')  # ngrok 可执行文件路径
 PROXY_PORT = 8082
 WORK_DIR = CFG.get('WORK_DIR', '/home/z/my-project')
 LOG_FILE = CFG.get('LOG_FILE', f'{WORK_DIR}/seamless.log')
 PID_FILE = f'{WORK_DIR}/watchdog.pid'
-PROXY_SCRIPT = os.path.join(WORK_DIR, 'proxy.py')
+
+# 脚本路径 - 优先使用当前脚本所在目录
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROXY_SCRIPT = os.path.join(SCRIPT_DIR, 'proxy.py') if os.path.exists(os.path.join(SCRIPT_DIR, 'proxy.py')) else os.path.join(WORK_DIR, 'proxy.py')
 
 # ═════════════ 全局状态 ═════════════
 class State:
@@ -312,11 +317,11 @@ def start_ngrok():
         
         # 确保配置 authtoken
         if NGROK_AUTHTOKEN:
-            subprocess.run(["ngrok", "config", "add-authtoken", NGROK_AUTHTOKEN],
+            subprocess.run([NGROK_PATH, "config", "add-authtoken", NGROK_AUTHTOKEN],
                          capture_output=True, timeout=5)
         
         subprocess.Popen(
-            ["ngrok", "http", f"http://127.0.0.1:{PROXY_PORT}",
+            [NGROK_PATH, "http", f"http://127.0.0.1:{PROXY_PORT}",
              "--log=stdout", "--log-format=logfmt"],
             stdout=open(LOG_FILE, "a"),
             stderr=open(LOG_FILE, "a"),
