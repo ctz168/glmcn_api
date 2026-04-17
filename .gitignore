@@ -1,5 +1,27 @@
-# 配置文件（含敏感信息）
+# 敏感配置文件
 config.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
 # 日志文件
 *.log
@@ -9,26 +31,9 @@ seamless.log
 *.pid
 watchdog.pid
 
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-.venv/
-venv/
-ENV/
-
 # IDE
 .idea/
 .vscode/
 *.swp
 *.swo
-
-# OS
-.DS_Store
-Thumbs.db
-
-# 临时文件
-*.tmp
-*.temp
+*~
