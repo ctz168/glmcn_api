@@ -17,8 +17,28 @@ import atexit
 # 配置
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROXY_SCRIPT = os.path.join(SCRIPT_DIR, 'proxy.py')
-LOG_FILE = '/home/z/my-project/seamless.log'
-PID_FILE = '/home/z/my-project/keeper.pid'
+LOG_FILE = os.path.join(SCRIPT_DIR, 'seamless.log')
+PID_FILE = os.path.join(SCRIPT_DIR, 'keeper.pid')
+
+# 从 config.env 读取配置
+def load_config():
+    config = {}
+    config_path = os.path.join(SCRIPT_DIR, 'config.env')
+    if os.path.isfile(config_path):
+        with open(config_path) as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#') and '=' in line:
+                    key, _, value = line.partition('=')
+                    key = key.strip()
+                    value = value.strip()
+                    if '#' in value:
+                        value = value[:value.index('#')].strip()
+                    config[key] = value
+    return config
+
+CONFIG = load_config()
+NGROK_AUTHTOKEN = CONFIG.get('NGROK_AUTHTOKEN', '')
 
 def log(msg):
     line = f"[{time.strftime('%H:%M:%S')}] [daemon] {msg}"

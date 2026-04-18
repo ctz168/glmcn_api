@@ -201,7 +201,7 @@ def daemonize():
     os.dup2(devnull.fileno(), sys.stdin.fileno())
     devnull.close()
     # stdout/stderr 重定向到日志
-    log_path = '/home/z/my-project/seamless.log'
+    log_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'seamless.log')
     try:
         log_fd = open(log_path, 'a')
         os.dup2(log_fd.fileno(), sys.stdout.fileno())
@@ -210,7 +210,7 @@ def daemonize():
     except:
         pass
     # 设置工作目录
-    os.chdir('/home/z/my-project')
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
     # 设置 umask
     os.umask(0o022)
 
@@ -221,11 +221,12 @@ def self_restart():
         import subprocess
         env = os.environ.copy()
         env['SELF_RESTART'] = '1'
+        log_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'seamless.log')
         # 用 nohup 确保完全独立
         subprocess.Popen(
             [sys.executable, sys.argv[0], '--no-daemon'],
-            stdout=open('/home/z/my-project/seamless.log', 'a'),
-            stderr=open('/home/z/my-project/seamless.log', 'a'),
+            stdout=open(log_path, 'a'),
+            stderr=open(log_path, 'a'),
             preexec_fn=os.setpgrp,
             env=env,
         )
