@@ -41,6 +41,7 @@ glmcn_api/
 ├── seamless_keeper.py     # 无缝保活启动器 v3
 ├── daemon_keeper.py       # 守护进程保活器 v5
 ├── ultimate_keeper.py     # 无缝保活启动器 v8 ⭐ 推荐
+├── keepalive_test.py      # 保活测试脚本 ⭐
 ├── start_optimized.sh     # 优化启动脚本
 ├── keep_alive_loop.sh     # 持续保活循环
 ├── one_click_start.sh     # 一键启动脚本 ⭐
