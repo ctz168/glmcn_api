@@ -52,7 +52,7 @@ glmcn_api/
 
 ## 快速开始（一键启动）
 
-### 方式一：Z.ai 容器环境启动（推荐）
+### 方式一：Z.ai 容器环境启动（推荐，使用 ngrok）
 
 ```bash
 # 1. 克隆仓库
@@ -61,13 +61,13 @@ cd glmcn_api
 
 # 2. 配置（首次运行需要）
 cp config.env.example config.env
-vim config.env  # 填入实际配置
+vim config.env  # 填入实际配置（设置 TUNNEL_TYPE=ngrok）
 
 # 3. 启动服务（运行 280 秒，适配容器 30 秒进程清理机制）
-python3 container_keeper.py --duration 280
+timeout 290 python3 keepalive_test.py
 
-# 或使用 timeout 控制运行时间
-timeout 290 python3 container_keeper.py --duration 280
+# 或指定运行时长
+timeout 320 python3 keepalive_test.py  # 运行 300 秒
 ```
 
 ### 方式二：使用一键启动脚本
@@ -264,18 +264,18 @@ curl https://your-domain.trycloudflare.com/v1/chat/completions \
 
 ## 测试验证
 
-已通过 5 分钟无缝保活测试验证：
+已通过 5 分钟无缝保活测试验证（使用 ngrok）：
 
 ```
 ════════════════════════════════════════
 📈 最终报告
 ════════════════════════════════════════
 运行时长: 300 秒
-检查次数: 54
+检查次数: 55
 修复次数: 0
 API 测试: 27 次
-成功次数: 25 次
-成功率: 92.6%
+成功次数: 27 次
+成功率: 100.0%
 ════════════════════════════════════════
 ```
 
@@ -283,8 +283,9 @@ API 测试: 27 次
 
 在 Z.ai 容器环境中测试结果：
 - 服务稳定运行 5 分钟，无需修复
-- 代理和 cloudflared 进程持续可用
-- API 调用成功率 92.6%
+- 代理和 ngrok 进程持续可用
+- API 调用成功率 100%
+- 公网 URL: `https://noncommemorational-mitzi-glitteringly.ngrok-free.dev`
 
 ## 故障排查
 
