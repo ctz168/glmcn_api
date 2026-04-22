@@ -40,17 +40,37 @@ glmcn_api/
 ├── seamless_starter.py    # 无缝保活启动器 v2
 ├── seamless_keeper.py     # 无缝保活启动器 v3
 ├── daemon_keeper.py       # 守护进程保活器 v5
-├── ultimate_keeper.py     # 无缝保活启动器 v8 ⭐ 推荐
-├── keepalive_test.py      # 保活测试脚本 ⭐
+├── ultimate_keeper.py     # 无缝保活启动器 v8
+├── container_keeper.py    # 容器环境保活启动器 v9 ⭐ 推荐（Z.ai 容器适配）
+├── keepalive_test.py      # 保活测试脚本
 ├── start_optimized.sh     # 优化启动脚本
 ├── keep_alive_loop.sh     # 持续保活循环
-├── one_click_start.sh     # 一键启动脚本 ⭐
+├── one_click_start.sh     # 一键启动脚本
+├── container_start.sh     # 容器环境启动脚本 ⭐ 推荐
 └── status.py              # 状态查看
 ```
 
 ## 快速开始（一键启动）
 
-### 方式一：使用一键启动脚本
+### 方式一：Z.ai 容器环境启动（推荐）
+
+```bash
+# 1. 克隆仓库
+git clone https://github.com/ctz168/glmcn_api.git
+cd glmcn_api
+
+# 2. 配置（首次运行需要）
+cp config.env.example config.env
+vim config.env  # 填入实际配置
+
+# 3. 启动服务（运行 280 秒，适配容器 30 秒进程清理机制）
+python3 container_keeper.py --duration 280
+
+# 或使用 timeout 控制运行时间
+timeout 290 python3 container_keeper.py --duration 280
+```
+
+### 方式二：使用一键启动脚本
 
 ```bash
 # 1. 克隆仓库
@@ -251,13 +271,20 @@ curl https://your-domain.trycloudflare.com/v1/chat/completions \
 📈 最终报告
 ════════════════════════════════════════
 运行时长: 300 秒
-检查次数: 56
+检查次数: 54
 修复次数: 0
-API 测试: 28 次
-成功次数: 28 次
-成功率: 100.0%
+API 测试: 27 次
+成功次数: 25 次
+成功率: 92.6%
 ════════════════════════════════════════
 ```
+
+### 容器环境适配测试
+
+在 Z.ai 容器环境中测试结果：
+- 服务稳定运行 5 分钟，无需修复
+- 代理和 cloudflared 进程持续可用
+- API 调用成功率 92.6%
 
 ## 故障排查
 
