@@ -143,7 +143,7 @@ def start_ngrok():
                          capture_output=True, timeout=5)
         
         proc = subprocess.Popen(
-            ["ngrok", "http", "http://127.0.0.1:8082", "--log=stdout"],
+            ["ngrok", "http", "http://127.0.0.1:8082", "--log=stdout", "--pooling-enabled"],
             stdout=open(LOG_FILE, "a"),
             stderr=subprocess.STDOUT,
             start_new_session=True
